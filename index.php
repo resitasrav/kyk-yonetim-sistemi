@@ -127,7 +127,7 @@ $yaklasan_etkinlik = $db->query(
             <a href="etkinlik/liste.php" class="card stat-card shadow-sm text-center p-3 bg-warning text-dark text-decoration-none">
                 <div style="font-size:2rem;"><i class="bi bi-calendar-event-fill"></i></div>
                 <div class="fs-2 fw-bold"><?= $yaklasan_etkinlik ?></div>
-                <div class="small opacity-75">Yaklaşan Etkinlik</div>
+                <div class="small opacity-75">-Yaklaşan Etkinlik -</div>
             </a>
         </div>
     </div>
