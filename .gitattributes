@@ -1,0 +1,10 @@
+# Dağıtım (deploy) sırasında sunucuya GİTMEMESİ gereken dosyalar.
+# 'git archive' ve GitHub'ın "Download ZIP" çıktısı bu kalıpları hariç tutar.
+# Böylece dokümantasyon/ekran görüntüleri GitHub'da görünür ama
+# okul sunucusuna yüklediğiniz pakette yer almaz.
+
+screenshots/   export-ignore
+README.md      export-ignore
+AI.md          export-ignore
+.gitattributes export-ignore
+.gitignore     export-ignore

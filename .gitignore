@@ -1,1 +1,5 @@
 config/db.php
+
+# Ekran görüntülerinin orijinal (büyük) halleri — sadece lokalde kalsın.
+# Optimize edilmiş küçük sürümleri screenshots/ klasöründe takip ediliyor.
+screenshoots/

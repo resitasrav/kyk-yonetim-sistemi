@@ -6,24 +6,71 @@ Modern, güvenli ve modüler bir mimariyle geliştirilmiş web tabanlı **Yurt (
 
 ## 🖼️ Ekran Görüntüleri
 
-### Giriş Ekranı
-![Giriş Ekranı](ekran1.png)
+> Görüntüler bağlama göre gruplanmıştır. Açmak için başlıklara tıklayın.
 
-### Ana Sayfa — Modül Seçimi
-![Ana Sayfa](ekran2.png)
+<details open>
+<summary><b>🔐 Giriş Ekranları</b> (Yönetici / Personel / Öğrenci)</summary>
+<br>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/1_giris/yonetici_giris.jpg" width="250" alt="Yönetici Girişi">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/1_giris/personel_giris.jpg" width="250" alt="Personel Girişi">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/1_giris/ogrenci_giris.jpg" width="250" alt="Öğrenci Girişi">
+</p>
+</details>
 
-### Öğrenci Listesi
-![Öğrenci Listesi](ekran3.png)
+<details>
+<summary><b>🛡️ Yönetici Paneli</b> (modül seçimi, öğrenci / personel / etkinlik takibi)</summary>
+<br>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/2_yonetici/modul_secimi.jpg" width="700" alt="Modül Seçimi"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/2_yonetici/ogrenci_takibi.jpg" width="700" alt="Öğrenci Takibi"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/2_yonetici/personel_maas_takibi.jpg" width="700" alt="Personel Maaş Takibi"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/2_yonetici/etkinlik_takibi.jpg" width="700" alt="Etkinlik Takibi">
+</p>
+</details>
+
+<details>
+<summary><b>🎓 Öğrenci Paneli</b> (ana panel, izin alma, etkinlik kaydı)</summary>
+<br>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/3_ogrenci/ana_panel.jpg" width="700" alt="Öğrenci Ana Panel"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/3_ogrenci/izin_alma.jpg" width="700" alt="Öğrenci İzin Alma"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/3_ogrenci/etkinlik_kayit.jpg" width="700" alt="Etkinlik Kaydı">
+</p>
+</details>
+
+<details>
+<summary><b>👔 Personel Paneli</b> (ana panel, izin talep / takip, maaş)</summary>
+<br>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/4_personel/ana_panel.jpg" width="700" alt="Personel Ana Panel"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/4_personel/izin_talep.jpg" width="700" alt="Personel İzin Talep"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/4_personel/izin_takip.jpg" width="700" alt="Personel İzin Takip"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/4_personel/maas_takip.jpg" width="700" alt="Personel Maaş Takip">
+</p>
+</details>
+
+<details>
+<summary><b>🗄️ Veritabanı</b> (genel görünüm, tablo bağlantıları)</summary>
+<br>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/5_veritabani/database_ekrani.jpg" width="700" alt="Veritabanı Ekranı"><br><br>
+  <img src="https://raw.githubusercontent.com/resitasrav/kyk-yonetim-sistemi/main/screenshots/5_veritabani/tablo_baglantilari.jpg" width="700" alt="Tablo Bağlantıları">
+</p>
+</details>
+
+> ℹ️ Görseller `screenshots/` klasöründe (GitHub deposunda) tutulur ve yukarıda **GitHub raw bağlantılarıyla** gösterilir. Uygulamanın çalışması için gerekli değildir; sunucuya yüklenmezler (bkz. [Dağıtım notu](#-dağıtımda-sunucuya-gitmeyecek-dosyalar)).
 
 ---
 
 ## 🎬 Tanıtım Videosu
 
-> 📺 Uygulamanın genel kullanımını gösteren tanıtım videosu:
+> 📺 Uygulamanın genel kullanımını gösteren tanıtım videosu buraya eklenecektir.
 
-[![Tanıtım Videosu](video_thumbnail.png)](video.mp4)
+<!-- VIDEO BURAYA EKLENECEK -->
+<!-- Örnek: [![Tanıtım Videosu](screenshots/video_thumbnail.jpg)](VIDEO_LINKI) -->
 
-🔗 **Video Bağlantısı:** [YouTube veya Google Drive linki buraya eklenecek]
+🔗 **Video Bağlantısı:** _(YouTube / Google Drive linki buraya eklenecek)_
 
 ---
 
@@ -58,8 +105,9 @@ KYK Yönetim Sistemi, bir yurdun temel operasyonlarını dijitalleştirmek için
 - Okul Numarası benzersizlik kontrolü; TC Kimlik No yönetici tarafından sonradan eklenir
 - Arama ve durum filtreleme (Aktif / Pasif / Mezun)
 - Anlık istatistik kartları (toplam, aktif, pasif, mezun)
-- **Öğrenci self-servis paneli:** kendi profil bilgileri, etkinlik kayıtları
+- **Öğrenci self-servis paneli:** kendi profil bilgileri, etkinlik kayıtları, izin talepleri
 - **Öğrenci profil sayfası:** telefon, e-posta, adres ve şifre kendi değiştirebilir; TC, okul no, bölüm yönetici yetkisindedir
+- **Öğrenci izin (evci/dışarı izni) sistemi:** öğrenci kendi izin talebini oluşturur, yönetici onaylar/reddeder
 
 ### 👔 Personel Modülü (CRUD + Self-Servis)
 - Personel kayıt, listeleme, düzenleme ve silme — yönetici TC, görevi, departman, maaş gibi bilgileri yönetir
@@ -68,10 +116,11 @@ KYK Yönetim Sistemi, bir yurdun temel operasyonlarını dijitalleştirmek için
 - **Personel profil sayfası:** telefon, e-posta ve şifre kendi değiştirebilir; TC, sicil no, görevi, maaş yönetici yetkisindedir
 
 ### 📅 İzin Takibi
-- Yıllık, mazeret, hastalık, ücretsiz izin türleri
-- İzin gün sayısının **hafta sonları hariç** otomatik hesaplanması
-- Personel kendi izin talebini oluşturabilir, yönetici onaylar/reddeder
-- Personel rolü sadece kendi izinlerini görebilir
+- **Personel izni:** Yıllık, mazeret, hastalık, ücretsiz izin türleri; gün sayısı **hafta sonları hariç** otomatik hesaplanır
+- **Öğrenci izni:** Evci, günübirlik, sağlık, diğer izin türleri; gün sayısı **hafta sonları dahil** (evci izni hafta sonunu kapsar) hesaplanır
+- Hem personel hem öğrenci kendi izin talebini oluşturabilir, yönetici onaylar/reddeder
+- Personel/öğrenci rolü sadece kendi izinlerini görebilir; yönetici tüm talepleri yönetir
+- Onaylanan personel izninde personel durumu otomatik `izinli` olur
 
 ### 💰 Maaş Yönetimi
 - Personelin net maaşını otomatik getirme
@@ -94,6 +143,7 @@ public_html/
 ├── config/
 │   ├── db.php               # PDO veritabanı bağlantı ayarları
 │   ├── init.sql             # Tablo yapıları ve test verileri
+│   ├── ogrenci_izin_migration.sql  # Mevcut DB'ye öğrenci izin tablosu ekleme
 │   └── sql_kodlari.sql      # Yardımcı SQL sorguları
 ├── includes/
 │   ├── header.php           # Dinamik navbar + güvenlik duvarı
@@ -104,8 +154,12 @@ public_html/
 │   ├── ekle.php             # Yeni öğrenci kaydı (yönetici — tam bilgi)
 │   ├── duzenle.php          # Öğrenci düzenleme (yönetici)
 │   ├── sil.php              # Öğrenci silme (POST+CSRF)
-│   ├── panel.php            # Öğrenci self-servis paneli
-│   └── profil.php           # Öğrenci profil düzenleme (telefon, e-posta, adres, şifre)
+│   ├── panel.php            # Öğrenci self-servis paneli (etkinlik + izin özeti)
+│   ├── profil.php           # Öğrenci profil düzenleme (telefon, e-posta, adres, şifre)
+│   ├── izin_liste.php       # Öğrenci izin listesi (öğrenci: kendi, yönetici: tümü)
+│   ├── izin_ekle.php        # Yeni öğrenci izin talebi (POST+CSRF)
+│   ├── izin_onayla.php      # Öğrenci izin onay/red işlemi (yönetici)
+│   └── izin_sil.php         # Öğrenci izin silme (POST+CSRF)
 ├── personel/
 │   ├── liste.php            # Personel listesi
 │   ├── ekle.php             # Yeni personel kaydı (yönetici — tam bilgi)
@@ -131,6 +185,12 @@ public_html/
 │   └── iptal.php            # Kayıt iptali (öğrenci, POST)
 ├── yonetici/
 │   └── profil.php           # Hesap ayarları (mevcut şifre doğrulamalı)
+├── screenshots/             # Ekran görüntüleri (sadece dokümantasyon — sunucuya gitmez)
+│   ├── 1_giris/             # Giriş ekranları
+│   ├── 2_yonetici/          # Yönetici paneli
+│   ├── 3_ogrenci/           # Öğrenci paneli
+│   ├── 4_personel/          # Personel paneli
+│   └── 5_veritabani/        # Veritabanı görselleri
 ├── index.php                # Yönetici dashboard (istatistik kartları)
 ├── login.php                # Giriş (rol bazlı yönlendirme)
 ├── kayit.php                # Kayıt (rol + sicil/okul no seçimi)
@@ -185,6 +245,18 @@ konum                         UNIQUE (etkinlik_id, ogrenci_id)
 durum
 olusturuldu
 guncellendi
+
+ogrenci_izinleri
+────────────────
+id (PK)
+ogrenci_id (FK → ogrenciler)
+izin_turu  (evci/gunubirlik/saglik/diger)
+baslangic_tarihi
+bitis_tarihi
+gun_sayisi
+aciklama
+durum      (bekliyor/onaylandi/reddedildi)
+olusturuldu
 ```
 
 ---
@@ -225,6 +297,31 @@ Tarayıcınızdan `kayit.php` adresine gidip ilk yönetici hesabınızı oluştu
 
 ---
 
+## 📦 Dağıtımda Sunucuya Gitmeyecek Dosyalar
+
+Ekran görüntüleri ve dokümanlar **yalnızca GitHub deposu için**dir; çalışan uygulamanın bunlara ihtiyacı yoktur. Okul sunucusuna gereksiz yer kaplamasınlar diye iki katmanlı koruma vardır:
+
+1. **`.gitattributes` → `export-ignore`:** GitHub'dan **"Download ZIP"** ile veya `git archive` ile aldığınız pakette `screenshots/`, `README.md`, `AI.md` **otomatik hariç tutulur.** Yani ZIP indirip sunucuya yüklerseniz görseller pakette zaten olmaz.
+
+2. **README'deki görseller mutlak GitHub raw bağlantısıyla** gösterilir. Böylece görsel dosyaları sadece GitHub'da durur; sunucuya kopyalanmasalar bile depo sayfasında sorunsuz görünür.
+
+**FTP / dosya yöneticisiyle elle yüklüyorsanız**, sunucuya sadece şunları atın:
+
+```
+config/  includes/  ogrenci/  personel/  etkinlik/  yonetici/
+index.php  login.php  kayit.php  logout.php
+```
+
+`screenshots/`, `screenshoots/`, `README.md`, `AI.md` ve `.git*` dosyalarını **yüklemeyin** — uygulama bunlar olmadan tam çalışır.
+
+> 💡 `git archive` ile temiz paket oluşturmak isterseniz:
+> ```bash
+> git archive --format=zip --output=deploy.zip main
+> ```
+> Bu komutun ürettiği `deploy.zip`, `export-ignore` sayesinde görselleri ve dokümanları içermez.
+
+---
+
 ## 🔒 Güvenlik Önlemleri
 
 - **SQL Injection:** Tüm sorgular PDO Prepared Statements ile korunmaktadır.
@@ -232,7 +329,7 @@ Tarayıcınızdan `kayit.php` adresine gidip ilk yönetici hesabınızı oluştu
 - **Şifre Güvenliği:** Şifreler `password_hash()` (bcrypt) ile hash'lenerek saklanmaktadır.
 - **Oturum Yönetimi:** PHP Session tabanlı kimlik doğrulama kullanılmaktadır.
 - **Rol Bazlı Erişim:** Her sayfa `rol_kontrol()` ile yetkisiz erişime kapalıdır.
-- **CSRF Koruması:** Tüm silme işlemleri POST + token doğrulamasıyla korunmaktadır.
+- **CSRF Koruması:** Tüm durum değiştiren işlemler (ekleme, silme, izin onay/red, etkinlik kayıt/iptal) POST + token doğrulamasıyla korunmaktadır.
 - **Şifre Değişikliği:** Profil sayfasında yeni şifre girilmeden önce mevcut şifre doğrulanır.
 
 ---
