@@ -75,6 +75,7 @@ $ana_sayfa = ($rol === 'ogrenci') ? '../ogrenci/panel.php'
                     <?php if ($modul === 'ogrenci'): ?>
                         <li class="nav-item"><a class="nav-link" href="../ogrenci/liste.php"><i class="bi bi-list-ul"></i> Öğrenciler</a></li>
                         <li class="nav-item"><a class="nav-link" href="../ogrenci/ekle.php"><i class="bi bi-person-plus"></i> Yeni Kayıt</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ogrenci/izin_liste.php"><i class="bi bi-calendar-event"></i> İzinler</a></li>
                     <?php elseif ($modul === 'personel'): ?>
                         <li class="nav-item"><a class="nav-link" href="../personel/liste.php"><i class="bi bi-people"></i> Personel</a></li>
                         <li class="nav-item"><a class="nav-link" href="../personel/ekle.php"><i class="bi bi-person-plus"></i> Yeni Kayıt</a></li>
@@ -91,6 +92,8 @@ $ana_sayfa = ($rol === 'ogrenci') ? '../ogrenci/panel.php'
                 <?php elseif ($rol === 'ogrenci'): ?>
                     <li class="nav-item"><a class="nav-link" href="../ogrenci/panel.php"><i class="bi bi-house"></i> Panelim</a></li>
                     <li class="nav-item"><a class="nav-link" href="../etkinlik/liste.php"><i class="bi bi-calendar-event"></i> Etkinlikler</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../ogrenci/izin_ekle.php"><i class="bi bi-plus-circle"></i> İzin Talebi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../ogrenci/izin_liste.php"><i class="bi bi-calendar-check"></i> İzinlerim</a></li>
                 <?php endif; ?>
 
             </ul>

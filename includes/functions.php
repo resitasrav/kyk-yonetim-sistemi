@@ -41,6 +41,24 @@ function is_gunu_hesapla(string $baslangic, string $bitis): int {
     return $gunler;
 }
 
+// Takvim gün sayısı hesapla (hafta sonu DAHİL — öğrenci evci izni için)
+function takvim_gun_hesapla(string $baslangic, string $bitis): int {
+    $start = new DateTime($baslangic);
+    $end   = new DateTime($bitis);
+    return (int)$start->diff($end)->days + 1; // başlangıç günü de dahil
+}
+
+// Öğrenci izin türü için okunabilir etiket
+function ogrenci_izin_turu_adi(string $tur): string {
+    $etiketler = [
+        'evci'       => 'Evci İzni',
+        'gunubirlik' => 'Günübirlik İzin',
+        'saglik'     => 'Sağlık İzni',
+        'diger'      => 'Diğer',
+    ];
+    return $etiketler[$tur] ?? ucfirst($tur);
+}
+
 // Tarihi gün.ay.yıl formatına çevir
 function tarih_format(string $tarih): string {
     if (!$tarih || $tarih === '0000-00-00') return '-';

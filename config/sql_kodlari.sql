@@ -116,7 +116,24 @@ CREATE TABLE IF NOT EXISTS etkinlik_katilim (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
 
 -- =============================================
--- 8. TEST VERİLERİ
+-- 9. ÖĞRENCİ İZİNLERİ (EVCİ / Dışarı Çıkma)
+-- =============================================
+CREATE TABLE IF NOT EXISTS ogrenci_izinleri (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ogrenci_id INT NOT NULL,
+    izin_turu ENUM('evci', 'gunubirlik', 'saglik', 'diger') NOT NULL DEFAULT 'evci',
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    gun_sayisi INT NOT NULL,
+    aciklama TEXT,
+    durum ENUM('bekliyor','onaylandi','reddedildi') NOT NULL DEFAULT 'bekliyor',
+    olusturuldu TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_ogrenci_izin FOREIGN KEY (ogrenci_id) REFERENCES ogrenciler(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+
+
+-- =============================================
+-- 10. TEST VERİLERİ
 -- =============================================
 INSERT INTO ogrenciler (ad, soyad, tc_no, okul_no, bolum, sinif, telefon, email, oda_no) VALUES
 ('Ahmet', 'Yılmaz', '12345678901', '2021001', 'Bilgisayar Mühendisliği', 3, '05321234567', 'ahmet@example.com', '101'),

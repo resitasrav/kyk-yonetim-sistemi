@@ -41,6 +41,22 @@ $stmt3 = $db->prepare("
 $stmt3->execute([$ogrenci_id]);
 $yaklasan_etkinlik = $stmt3->fetchColumn();
 
+// Son izin talepleri
+$stmt4 = $db->prepare("
+    SELECT izin_turu, baslangic_tarihi, bitis_tarihi, gun_sayisi, durum
+    FROM ogrenci_izinleri
+    WHERE ogrenci_id = ?
+    ORDER BY olusturuldu DESC
+    LIMIT 5
+");
+$stmt4->execute([$ogrenci_id]);
+$izinler = $stmt4->fetchAll();
+
+// Onay bekleyen izin sayısı
+$stmt5 = $db->prepare("SELECT COUNT(*) FROM ogrenci_izinleri WHERE ogrenci_id = ? AND durum = 'bekliyor'");
+$stmt5->execute([$ogrenci_id]);
+$bekleyen_izin = $stmt5->fetchColumn();
+
 $sayfa_basligi = "Öğrenci Paneli";
 require_once '../includes/header.php';
 ?>
@@ -75,19 +91,26 @@ require_once '../includes/header.php';
     <!-- Özet kartlar + katılımlar -->
     <div class="col-md-8">
         <div class="row g-3 mb-4">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="card border-0 shadow-sm text-center p-3 bg-success text-white">
                     <div style="font-size:2rem;"><i class="bi bi-calendar-event"></i></div>
                     <div class="fs-3 fw-bold"><?= count($katilimlar) ?></div>
                     <div class="small">Etkinlik Kaydım</div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <div class="card border-0 shadow-sm text-center p-3 bg-warning text-dark">
                     <div style="font-size:2rem;"><i class="bi bi-bell"></i></div>
                     <div class="fs-3 fw-bold"><?= $yaklasan_etkinlik ?></div>
                     <div class="small">Yeni Etkinlik</div>
                 </div>
+            </div>
+            <div class="col-4">
+                <a href="izin_liste.php" class="card border-0 shadow-sm text-center p-3 bg-info text-white text-decoration-none">
+                    <div style="font-size:2rem;"><i class="bi bi-hourglass-split"></i></div>
+                    <div class="fs-3 fw-bold"><?= $bekleyen_izin ?></div>
+                    <div class="small">Bekleyen İznim</div>
+                </a>
             </div>
         </div>
 
@@ -131,6 +154,50 @@ require_once '../includes/header.php';
                 <?php endif; ?>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- İzin Taleplerim -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-calendar-check text-info"></i> İzin Taleplerim</span>
+        <a href="izin_ekle.php" class="btn btn-info text-white btn-sm">
+            <i class="bi bi-plus-circle"></i> Yeni İzin Talebi
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <?php if (empty($izinler)): ?>
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-calendar-x" style="font-size:2rem;"></i>
+                <p class="mt-2">Henüz izin talebiniz yok.</p>
+                <a href="izin_ekle.php" class="btn btn-outline-info btn-sm">İzin Talebi Oluştur</a>
+            </div>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>İzin Türü</th>
+                            <th>Başlangıç</th>
+                            <th>Bitiş</th>
+                            <th>Gün</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($izinler as $iz): ?>
+                        <tr>
+                            <td class="fw-semibold"><?= htmlspecialchars(ogrenci_izin_turu_adi($iz['izin_turu'])) ?></td>
+                            <td><?= tarih_format($iz['baslangic_tarihi']) ?></td>
+                            <td><?= tarih_format($iz['bitis_tarihi']) ?></td>
+                            <td><span class="badge bg-secondary"><?= $iz['gun_sayisi'] ?> Gün</span></td>
+                            <td><?= durum_badge($iz['durum']) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 

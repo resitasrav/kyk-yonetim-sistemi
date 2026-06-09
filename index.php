@@ -38,6 +38,7 @@ unset($_SESSION['modul']);
 $toplam_ogrenci  = $db->query("SELECT COUNT(*) FROM ogrenciler WHERE durum='aktif'")->fetchColumn();
 $toplam_personel = $db->query("SELECT COUNT(*) FROM personel WHERE durum='aktif'")->fetchColumn();
 $bekleyen_izin   = $db->query("SELECT COUNT(*) FROM izinler WHERE durum='bekliyor'")->fetchColumn();
+$bekleyen_ogr_izin = $db->query("SELECT COUNT(*) FROM ogrenci_izinleri WHERE durum='bekliyor'")->fetchColumn();
 $yaklasan_etkinlik = $db->query(
     "SELECT COUNT(*) FROM etkinlikler WHERE durum='aktif' AND etkinlik_tarihi >= CURDATE()"
 )->fetchColumn();
@@ -101,30 +102,38 @@ $yaklasan_etkinlik = $db->query(
 
     <!-- İstatistik kartları -->
     <div class="row g-3 mb-5">
-        <div class="col-6 col-md-3">
-            <div class="card stat-card shadow-sm text-center p-3 bg-primary text-white">
+        <div class="col-6 col-md">
+            <div class="card stat-card shadow-sm text-center p-3 bg-primary text-white h-100">
                 <div style="font-size:2rem;"><i class="bi bi-mortarboard-fill"></i></div>
                 <div class="fs-2 fw-bold"><?= $toplam_ogrenci ?></div>
                 <div class="small opacity-75">Aktif Öğrenci</div>
             </div>
         </div>
-        <div class="col-6 col-md-3">
-            <div class="card stat-card shadow-sm text-center p-3 bg-success text-white">
+        <div class="col-6 col-md">
+            <div class="card stat-card shadow-sm text-center p-3 bg-success text-white h-100">
                 <div style="font-size:2rem;"><i class="bi bi-person-badge-fill"></i></div>
                 <div class="fs-2 fw-bold"><?= $toplam_personel ?></div>
                 <div class="small opacity-75">Aktif Personel</div>
             </div>
         </div>
-        <div class="col-6 col-md-3">
-            <a href="personel/izin_liste.php" class="card stat-card shadow-sm text-center p-3 text-decoration-none
+        <div class="col-6 col-md">
+            <a href="personel/izin_liste.php" class="card stat-card shadow-sm text-center p-3 text-decoration-none h-100
                <?= $bekleyen_izin > 0 ? 'bg-warning text-dark' : 'bg-light text-dark' ?>">
                 <div style="font-size:2rem;"><i class="bi bi-hourglass-split"></i></div>
                 <div class="fs-2 fw-bold"><?= $bekleyen_izin ?></div>
-                <div class="small opacity-75">Bekleyen İzin</div>
+                <div class="small opacity-75">Personel İzni</div>
             </a>
         </div>
-        <div class="col-6 col-md-3">
-            <a href="etkinlik/liste.php" class="card stat-card shadow-sm text-center p-3 bg-warning text-dark text-decoration-none">
+        <div class="col-6 col-md">
+            <a href="ogrenci/izin_liste.php" class="card stat-card shadow-sm text-center p-3 text-decoration-none h-100
+               <?= $bekleyen_ogr_izin > 0 ? 'bg-info text-white' : 'bg-light text-dark' ?>">
+                <div style="font-size:2rem;"><i class="bi bi-person-walking"></i></div>
+                <div class="fs-2 fw-bold"><?= $bekleyen_ogr_izin ?></div>
+                <div class="small opacity-75">Öğrenci İzni</div>
+            </a>
+        </div>
+        <div class="col-6 col-md">
+            <a href="etkinlik/liste.php" class="card stat-card shadow-sm text-center p-3 bg-warning text-dark text-decoration-none h-100">
                 <div style="font-size:2rem;"><i class="bi bi-calendar-event-fill"></i></div>
                 <div class="fs-2 fw-bold"><?= $yaklasan_etkinlik ?></div>
                 <div class="small opacity-75">Yaklaşan Etkinlik</div>
@@ -139,7 +148,7 @@ $yaklasan_etkinlik = $db->query(
                 <div class="card-body">
                     <div class="icon-wrapper text-primary"><i class="bi bi-mortarboard-fill"></i></div>
                     <h4 class="card-title fw-bold text-primary mb-2">Öğrenci Modülü</h4>
-                    <p class="card-text text-secondary small">Öğrenci kayıt, listeleme, düzenleme ve silme işlemleri</p>
+                    <p class="card-text text-secondary small">Öğrenci kayıt, listeleme, izin onayı ve düzenleme işlemleri</p>
                 </div>
             </a>
         </div>

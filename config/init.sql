@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS etkinlik_katilim;
 DROP TABLE IF EXISTS etkinlikler;
 DROP TABLE IF EXISTS maas_odemeleri;
 DROP TABLE IF EXISTS izinler;
+DROP TABLE IF EXISTS ogrenci_izinleri;
 DROP TABLE IF EXISTS personel;
 DROP TABLE IF EXISTS ogrenciler;
 DROP TABLE IF EXISTS yoneticiler;
@@ -81,6 +82,29 @@ CREATE TABLE IF NOT EXISTS izinler (
     CONSTRAINT fk_izin_personel
         FOREIGN KEY (personel_id)
         REFERENCES personel(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+
+-- =============================================
+-- 3.b ÖĞRENCİ İZİNLERİ TABLOSU (Evci / dışarı izni)
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS ogrenci_izinleri (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ogrenci_id INT NOT NULL,
+    izin_turu ENUM('evci','gunubirlik','saglik','diger')
+        NOT NULL DEFAULT 'evci',
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    gun_sayisi INT NOT NULL,
+    aciklama TEXT,
+    durum ENUM('bekliyor','onaylandi','reddedildi')
+        NOT NULL DEFAULT 'bekliyor',
+    olusturuldu TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ogrenci_izin
+        FOREIGN KEY (ogrenci_id)
+        REFERENCES ogrenciler(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
 
@@ -194,6 +218,14 @@ INSERT INTO izinler
 VALUES
 (1, 'yillik', '2026-06-10', '2026-06-15',
  4, 'Yıllık iznimin bir kısmını kullanmak istiyorum.',
+ 'bekliyor');
+
+INSERT INTO ogrenci_izinleri
+(ogrenci_id, izin_turu, baslangic_tarihi,
+ bitis_tarihi, gun_sayisi, aciklama, durum)
+VALUES
+(1, 'evci', '2026-06-13', '2026-06-15',
+ 3, 'Hafta sonu ailemin yanına gitmek istiyorum.',
  'bekliyor');
 
 INSERT INTO maas_odemeleri
