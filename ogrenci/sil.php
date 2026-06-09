@@ -14,10 +14,20 @@ csrf_dogrula();
 
 $id = (int)($_POST['id'] ?? 0);
 if ($id) {
-    $stmt = $db->prepare("DELETE FROM ogrenciler WHERE id = ?");
-    $stmt->execute([$id]);
-    mesaj_ayarla($stmt->rowCount() ? 'Öğrenci kaydı silindi.' : 'Kayıt bulunamadı.',
-                  $stmt->rowCount() ? 'success' : 'danger');
+    // Öğrenci ile bağlı giriş hesabını tek transaction'da sil (öksüz hesap kalmasın)
+    $db->beginTransaction();
+    try {
+        $db->prepare("DELETE FROM yoneticiler WHERE rol='ogrenci' AND ilgili_id = ?")
+           ->execute([$id]);
+        $stmt = $db->prepare("DELETE FROM ogrenciler WHERE id = ?");
+        $stmt->execute([$id]);
+        $db->commit();
+        mesaj_ayarla($stmt->rowCount() ? 'Öğrenci kaydı ve giriş hesabı silindi.' : 'Kayıt bulunamadı.',
+                      $stmt->rowCount() ? 'success' : 'danger');
+    } catch (Exception $e) {
+        $db->rollBack();
+        mesaj_ayarla('Silme işlemi başarısız: ' . $e->getMessage(), 'danger');
+    }
 } else {
     mesaj_ayarla('Geçersiz istek.', 'danger');
 }
