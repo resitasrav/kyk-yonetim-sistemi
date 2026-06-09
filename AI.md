@@ -579,3 +579,178 @@ Yönetici `duzenle.php`'den bu alanları doldurur. PHP tarafında tabloda göste
 ```
 
 Null-able alanları sonradan doldurmak; kayıt sürecini kullanıcı için kolaylaştırırken yöneticiye veri bütünlüğünü kontrol etme yetkisi verir.
+
+---
+
+## Sohbet 15 — Öğrenci İzin Sistemi (Evci / Dışarı İzni)
+
+**Ben:** Personel için izin sistemi var ama öğrenciler için yok. Yurtta kalan öğrenciler de hafta sonu evlerine giderken (evci izni) izin alabilmeli, yönetici de onaylasın. Personeldeki yapıyı kopyalasam yeter mi?
+
+**Claude:** Mantık aynı (talep → onay), ama öğrenci izni ayrı bir tablo olmalı çünkü `izinler` tablosu `personel_id`'ye bağlı. Yeni bir tablo açın:
+
+```sql
+CREATE TABLE ogrenci_izinleri (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ogrenci_id INT NOT NULL,
+    izin_turu ENUM('evci','gunubirlik','saglik','diger') NOT NULL DEFAULT 'evci',
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    gun_sayisi INT NOT NULL,
+    aciklama TEXT,
+    durum ENUM('bekliyor','onaylandi','reddedildi') NOT NULL DEFAULT 'bekliyor',
+    olusturuldu TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_ogrenci_izin
+        FOREIGN KEY (ogrenci_id) REFERENCES ogrenciler(id) ON DELETE CASCADE
+);
+```
+
+İzin türleri personelden farklı: personelde `yillik/mazeret/hastalik/ucretsiz`, öğrencide yurt bağlamına uygun `evci/gunubirlik/saglik/diger`.
+
+**Ben:** Gün sayısını personeldeki `is_gunu_hesapla()` ile mi hesaplayayım?
+
+**Claude:** Hayır — burada dikkat! Personelde hafta sonu **hariç** tutulur (mesai günü). Ama öğrencinin evci izni tam tersine **hafta sonunu kapsar**. Aynı fonksiyonu kullanırsanız 2 günlük hafta sonu izni "0 gün" çıkar. Hafta sonu **dahil** sayan ayrı bir fonksiyon yazın:
+
+```php
+// Takvim gün sayısı (hafta sonu DAHİL — öğrenci evci izni için)
+function takvim_gun_hesapla(string $baslangic, string $bitis): int {
+    $start = new DateTime($baslangic);
+    $end   = new DateTime($bitis);
+    return (int)$start->diff($end)->days + 1; // başlangıç günü de dahil
+}
+```
+
+`diff()->days` iki tarih arasındaki farkı verir; `+1` ile başlangıç gününü de sayarız (13–15 arası = 3 gün).
+
+**Ben:** Öğrenci kendi talebini oluştururken personeldeki gibi rolüne göre çalışsın istiyorum.
+
+**Claude:** Personeldeki `$kendi` desenini birebir uygulayın — öğrenci rolündeyse kendi id'si gizli input, yöneticiyse dropdown. Ama **sunucu tarafında** mutlaka doğrulayın, hidden input değiştirilebilir:
+
+```php
+$kendi = ($rol === 'ogrenci');
+$ogrenci_id = $kendi ? (int)$_SESSION['ilgili_id'] : (int)($_POST['ogrenci_id'] ?? 0);
+```
+
+İzin türünü de whitelist ile doğrulayın — kullanıcı ENUM dışı bir değer gönderirse INSERT hata verir:
+
+```php
+$gecerli_turler = ['evci', 'gunubirlik', 'saglik', 'diger'];
+if (!in_array($izin_turu, $gecerli_turler)) $hatalar[] = 'Geçerli bir izin türü seçiniz.';
+```
+
+**Ben:** Onaylanınca öğrencinin durumunu 'izinli' yapayım mı, personeldeki gibi?
+
+**Claude:** Yapamazsınız — `ogrenciler` tablosundaki `durum` ENUM'u sadece `aktif/pasif/mezun` içeriyor, `izinli` yok. Personelde `izinli` durumu var çünkü maaş/mesai takibi için anlamlı. Öğrenci izni daha çok bir "kayıt/onay" akışı; durumu değiştirmeden sadece izin tablosundaki `durum`'u güncelleyin yeterli. İsterseniz ENUM'a `izinli` ekleyebilirsiniz ama bu sefer liste/filtre/badge'leri de güncellemeniz gerekir.
+
+---
+
+## Sohbet 16 — Onay/Red İşlemlerini GET'ten POST'a Çevirmek
+
+**Ben:** İzin onay/red butonlarım `<a href="izin_onayla.php?id=5&aksiyon=onayla">` şeklinde link. Silme işlemlerini POST yaptım ama onayı unutmuşum. Sorun olur mu?
+
+**Claude:** Evet — onay/red de **durum değiştiren** bir işlem, tıpkı silme gibi. GET ile yapılması iki açık doğurur:
+
+1. **CSRF:** Başka bir sitedeki `<img src="...izin_onayla.php?id=5&aksiyon=onayla">` tag'i, siz yöneticiyken sayfayı açtığınızda izni sessizce onaylatabilir.
+2. **Önbellek/önyükleme:** Tarayıcı veya bir bot GET linklerini önceden çekebilir (prefetch) ve işlemi istemsiz tetikleyebilir.
+
+Kural: **veriyi değiştiren hiçbir işlem GET ile yapılmamalı.** Onayı POST + CSRF token'a çevirin. `izin_onayla.php` başında:
+
+```php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: izin_liste.php');
+    exit;
+}
+csrf_dogrula();
+
+$id      = (int)($_POST['id'] ?? 0);
+$aksiyon = $_POST['aksiyon'] ?? '';
+```
+
+Listedeki linki de küçük bir POST formuna dönüştürün:
+
+```php
+<form method="POST" action="izin_onayla.php" class="d-inline"
+      onsubmit="return confirm('İzni onaylamak istiyor musunuz?')">
+    <?= csrf_input() ?>
+    <input type="hidden" name="id" value="<?= $iz['id'] ?>">
+    <input type="hidden" name="aksiyon" value="onayla">
+    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
+</form>
+```
+
+`class="d-inline"` ile form, eski `<a>` butonu gibi yan yana durur — görünüm bozulmaz.
+
+**Ben:** Bir izin reddedilince personelin durumu 'izinli' kalıyordu, fark ettim. Onaylayınca 'izinli' yapıyorum ama reddedince geri almıyorum.
+
+**Claude:** Klasik bir durum tutarsızlığı. Reddedince (veya iznini iptal edince) personelin başka **aktif/onaylı** izni kalmadıysa durumu `aktif`'e döndürün — ama körlemesine değil, önce kontrol edin:
+
+```php
+if ($aksiyon === 'reddet') {
+    $aktif_izin = $db->prepare("
+        SELECT COUNT(*) FROM izinler
+        WHERE personel_id = ? AND durum = 'onaylandi' AND bitis_tarihi >= CURDATE()
+    ");
+    $aktif_izin->execute([$row['personel_id']]);
+    if ($aktif_izin->fetchColumn() == 0) {
+        $db->prepare("UPDATE personel SET durum='aktif' WHERE id=? AND durum='izinli'")
+           ->execute([$row['personel_id']]);
+    }
+}
+```
+
+`AND durum='izinli'` koşulu önemli — `pasif` yapılmış bir personeli yanlışlıkla `aktif`'e çevirmeyi önler. Yani: "sadece şu an izinli olan ve başka geçerli izni kalmayan personeli aktife al."
+
+**Ben:** Aynı CSRF eksikliği etkinlik kayıt/iptalde de var mıydı?
+
+**Claude:** Evet, `katil.php` ve `iptal.php` POST kontrolü yapıyordu ama token doğrulamıyordu. Formlarına `<?= csrf_input() ?>`, işleyici dosyalara `csrf_dogrula();` ekleyin. Genel ilke: **POST alan her dosyada `csrf_dogrula()`, durum değiştiren her formda `csrf_input()`** — ikisi her zaman çift gider.
+
+---
+
+## Sohbet 17 — Polymorphic İlişki ve Öksüz Giriş Hesabı Sorunu
+
+**Ben:** `yoneticiler` tablosu diğer tablolardan kopuk görünüyor — `ilgili_id` var ama hiçbir `FOREIGN KEY` yok. Bu bir mantık hatası mı?
+
+**Claude:** Hayır, kasıtlı bir desen — buna **polymorphic association** (çok-biçimli ilişki) denir. `ilgili_id`, `rol` sütununa göre farklı tabloyu işaret eder:
+
+```
+rol = 'yonetici'  → ilgili_id = NULL
+rol = 'personel'  → ilgili_id → personel.id
+rol = 'ogrenci'   → ilgili_id → ogrenciler.id
+```
+
+Bir kolon aynı anda iki farklı tabloya `FOREIGN KEY` olamayacağı için buraya gerçek FK koyamazsınız. Tek giriş tablosuyla üç rolü yönetmenin pratik yolu budur. Yani şema "kopuk" değil, sadece ilişki uygulama katmanında kuruluyor.
+
+**Ben:** Peki bunun bir sakıncası var mı?
+
+**Claude:** Evet, bir tane: **referans bütünlüğü (referential integrity) veritabanı tarafından garanti edilmez.** En somut sonucu silme işleminde görülür. FK + `CASCADE` olmadığı için, bir öğrenciyi silince `yoneticiler`'deki giriş hesabı otomatik silinmez:
+
+```php
+// ogrenci/sil.php — eski hali, SADECE öğrenciyi siler
+$db->prepare("DELETE FROM ogrenciler WHERE id = ?")->execute([$id]);
+```
+
+Sonuç: `yoneticiler`'de `ilgili_id=5, rol='ogrenci'` satırı **öksüz** kalır. E-posta `UNIQUE` olduğu için o kişi tekrar kayıt da olamaz; hesap çöp olarak DB'de birikir.
+
+**Ben:** Şemayı değiştirmeden nasıl çözerim?
+
+**Claude:** Silme işleminde bağlı giriş hesabını **elle, aynı transaction içinde** silin. Transaction önemli — biri silinip diğeri kalırsa yine tutarsızlık olur:
+
+```php
+$db->beginTransaction();
+try {
+    // Önce bağlı giriş hesabı
+    $db->prepare("DELETE FROM yoneticiler WHERE rol='ogrenci' AND ilgili_id = ?")
+       ->execute([$id]);
+    // Sonra asıl kayıt
+    $db->prepare("DELETE FROM ogrenciler WHERE id = ?")->execute([$id]);
+    $db->commit();
+} catch (Exception $e) {
+    $db->rollBack();
+    mesaj_ayarla('Silme başarısız: ' . $e->getMessage(), 'danger');
+}
+```
+
+`rol='ogrenci'` koşulu kritik: `ilgili_id` tek başına benzersiz değil (öğrenci 5 ile personel 5 ayrı kişiler). Rol filtresi olmadan yanlış hesabı silebilirsiniz.
+
+**Ben:** Daha "doğru" bir tasarım olmaz mıydı?
+
+**Claude:** Alternatif: `yoneticiler`'e ayrı `personel_id` ve `ogrenci_id` kolonları koyup ikisine de gerçek FK + `ON DELETE CASCADE` eklemek. O zaman veritabanı temizliği otomatik yapar. Ama bu, login/kayıt/header dahil `ilgili_id` kullanan tüm kodu değiştirmeyi gerektirir. Bu ölçekteki bir projede polymorphic desen + uygulama katmanında temizlik yeterli ve risksizdir. Önemli olan: **bilinçli tercih yapmak** — "FK koyamıyorum, o halde silmeyi elle ve transaction ile yöneteceğim" demek.
