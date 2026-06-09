@@ -149,10 +149,14 @@ include '../includes/header.php';
                         <?php if (!$kendi): ?>
                         <td class="text-center">
                             <?php if ($od['durum'] === 'bekliyor'): ?>
-                            <a href="maas_onayla.php?id=<?= $od['id'] ?>" class="btn btn-success btn-sm" title="Ödendi İşaretle"
-                               onclick="return confirm('Ödeme yapıldı olarak işaretlensin mi?')">
-                                <i class="bi bi-check2-all"></i> Ödendi
-                            </a>
+                            <form method="POST" action="maas_onayla.php" class="d-inline"
+                                  onsubmit="return confirm('Ödeme yapıldı olarak işaretlensin mi?')">
+                                <?= csrf_input() ?>
+                                <input type="hidden" name="id" value="<?= $od['id'] ?>">
+                                <button type="submit" class="btn btn-success btn-sm" title="Ödendi İşaretle">
+                                    <i class="bi bi-check2-all"></i> Ödendi
+                                </button>
+                            </form>
                             <?php endif; ?>
                             <form method="POST" action="maas_sil.php" class="d-inline"
                                   onsubmit="return confirm('Bu ödeme kaydını silmek istiyor musunuz?')">

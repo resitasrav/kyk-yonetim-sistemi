@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+csrf_dogrula();
+
 $etkinlik_id = (int)($_POST['etkinlik_id'] ?? 0);
 $ogrenci_id  = (int)$_SESSION['ilgili_id'];
 

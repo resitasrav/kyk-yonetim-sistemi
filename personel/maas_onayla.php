@@ -5,10 +5,17 @@ require_once '../config/db.php';
 require_once '../includes/functions.php';
 rol_kontrol('yonetici');
 
-$id = (int)($_GET['id'] ?? 0);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: maas_liste.php');
+    exit;
+}
+
+csrf_dogrula();
+
+$id = (int)($_POST['id'] ?? 0);
 
 if ($id) {
-    // $pdo yerine $db kullanıldı. Durumu 'odendi' yap ve ödeme tarihini bugünün tarihi yap.
+    // Durumu 'odendi' yap ve ödeme tarihini bugünün tarihi yap.
     $stmt = $db->prepare("UPDATE maas_odemeleri SET durum='odendi', odeme_tarihi=CURDATE() WHERE id=?");
     $stmt->execute([$id]);
     

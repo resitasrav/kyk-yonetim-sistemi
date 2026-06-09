@@ -30,6 +30,8 @@ if ($kendi) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_dogrula();
+
     $personel_id      = $kendi ? $kendi_personel_id : (int)($_POST['personel_id'] ?? 0);
     $izin_turu        = post('izin_turu');
     $baslangic_tarihi = post('baslangic_tarihi');
@@ -89,6 +91,7 @@ include '../includes/header.php';
         <?php endif; ?>
 
         <form method="POST">
+            <?= csrf_input() ?>
             <div class="row g-3">
 
                 <?php if ($kendi): ?>

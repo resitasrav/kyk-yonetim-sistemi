@@ -154,16 +154,24 @@ include '../includes/header.php';
                         <?php if (!$kendi): ?>
                         <td class="text-center">
                             <?php if ($iz['durum'] === 'bekliyor'): ?>
-                            <a href="izin_onayla.php?id=<?= $iz['id'] ?>&aksiyon=onayla"
-                               class="btn btn-success btn-sm" title="Onayla"
-                               onclick="return confirm('İzni onaylamak istiyor musunuz?')">
-                                <i class="bi bi-check-circle"></i>
-                            </a>
-                            <a href="izin_onayla.php?id=<?= $iz['id'] ?>&aksiyon=reddet"
-                               class="btn btn-danger btn-sm" title="Reddet"
-                               onclick="return confirm('İzni reddetmek istiyor musunuz?')">
-                                <i class="bi bi-x-circle"></i>
-                            </a>
+                            <form method="POST" action="izin_onayla.php" class="d-inline"
+                                  onsubmit="return confirm('İzni onaylamak istiyor musunuz?')">
+                                <?= csrf_input() ?>
+                                <input type="hidden" name="id" value="<?= $iz['id'] ?>">
+                                <input type="hidden" name="aksiyon" value="onayla">
+                                <button type="submit" class="btn btn-success btn-sm" title="Onayla">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                            </form>
+                            <form method="POST" action="izin_onayla.php" class="d-inline"
+                                  onsubmit="return confirm('İzni reddetmek istiyor musunuz?')">
+                                <?= csrf_input() ?>
+                                <input type="hidden" name="id" value="<?= $iz['id'] ?>">
+                                <input type="hidden" name="aksiyon" value="reddet">
+                                <button type="submit" class="btn btn-danger btn-sm" title="Reddet">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </form>
                             <?php endif; ?>
                             <form method="POST" action="izin_sil.php" class="d-inline"
                                   onsubmit="return confirm('İzin kaydını silmek istiyor musunuz?')">

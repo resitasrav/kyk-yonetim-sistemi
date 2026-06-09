@@ -190,6 +190,7 @@ include '../includes/header.php';
                 <?php if ($kayitli): ?>
                     <form method="POST" action="iptal.php"
                           onsubmit="return confirm('Etkinlik kaydınızı iptal etmek istiyor musunuz?')">
+                        <?= csrf_input() ?>
                         <input type="hidden" name="etkinlik_id" value="<?= $e['id'] ?>">
                         <button type="submit" class="btn btn-outline-danger w-100 btn-sm">
                             <i class="bi bi-x-circle"></i> Kaydımı İptal Et
@@ -201,6 +202,7 @@ include '../includes/header.php';
                     </button>
                 <?php else: ?>
                     <form method="POST" action="katil.php">
+                        <?= csrf_input() ?>
                         <input type="hidden" name="etkinlik_id" value="<?= $e['id'] ?>">
                         <button type="submit" class="btn btn-success w-100 btn-sm">
                             <i class="bi bi-plus-circle"></i> Kayıt Ol
