@@ -65,12 +65,9 @@ Modern, güvenli ve modüler bir mimariyle geliştirilmiş web tabanlı **Yurt (
 
 ## 🎬 Tanıtım Videosu
 
-> 📺 Uygulamanın genel kullanımını gösteren tanıtım videosu buraya eklenecektir.
+> 📺 Uygulamanın genel kullanımını gösteren tanıtım videosu:
 
-<!-- VIDEO BURAYA EKLENECEK -->
-<!-- Örnek: [![Tanıtım Videosu](screenshots/video_thumbnail.jpg)](VIDEO_LINKI) -->
-
-🔗 **Video Bağlantısı:** _(YouTube / Google Drive linki buraya eklenecek)_
+[![YouTube Video](https://img.shields.io/badge/YouTube-%F0%9F%93%BA%20Videoyu%20İzle-red?style=for-the-badge)](https://youtu.be/BbRNGKbZ5pA)
 
 ---
 
